@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+    <style>
+      .calendar {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .calendar table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .calendar th,
+      .calendar td {
+        padding: 5px;
+        text-align: center;
+        border: 1px solid#ccc;
+      }
+      .calendar.current-day {
+        background-color: #f5f5f5;
+      }
+    </style>
+    <script>
+      function displayCalendar(year, month) {
+        var container = document.getElementById("calendarContainer");
+        var numDays = new Date(year, month, 0).getDate();
+        var firstDay = new Date(year, month - 1, 1).getDay();
+        var calendarHTML = "<table class='calendar'>";
+        calendarHTML +=
+          "<tr><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr>";
+
+        var day = 1;
+
+        for (var i = 0; i < 6; i++) {
+          calendarHTML += "<tr>";
+
+          for (var j = 0; j < 7; j++) {
+            if (i === 0 && j < firstDay) {
+              calendarHTML += "<td></td>";
+            } else if (day <= numDays) {
+              var currentDate = new Date();
+
+              if (
+                currentDate.getFullYear() === year &&
+                currentDate.getMonth() === month - 1 &&
+                currentDate.getDate() === day
+              ) {
+                calendarHTML += "<td class='current-day'>" + day + "</td>";
+              } else {
+                calendarHTML += "<td>" + day + "</td>";
+              }
+              day++;
+            } else {
+              calendarHTML += "<td></td>";
+            }
+          }
+
+          calendarHTML += "</tr>"; // Corrected placement of </tr> here
+          if (day > numDays) {
+            break;
+          }
+        }
+
+        calendarHTML += "</table>";
+        container.innerHTML = calendarHTML;
+      }
+    </script>
+  </head>
+  <body>
+    <div id="calendarContainer"></div>
+    <script>
+      var currentDate = new Date();
+      var currentYear = currentDate.getFullYear();
+      var currentMonth = currentDate.getMonth();
+      displayCalendar(currentYear, currentMonth);
+    </script>
+  </body>
+</html>
